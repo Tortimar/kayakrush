@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kayak Rush</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script type="importmap">
+    { "imports": { "three": "/vendor/three.module.js" } }
+  </script>
+</head>
+<body>
+  <canvas id="view"></canvas>
+
+  <!-- Menu d'accueil -->
+  <section id="menu" class="screen">
+    <div class="card menu-card">
+      <h1>Kayak <span>Rush</span></h1>
+      <p class="tagline">Descendez le fleuve ensemble. Ramez en rythme. Ne tombez pas.</p>
+      <label>Ton pseudo<input id="name" maxlength="16" placeholder="Pagayeur" autocomplete="off" /></label>
+      <button id="btn-create" class="btn primary">Créer un lobby</button>
+      <div class="sep"><span>ou</span></div>
+      <div class="join-row">
+        <input id="code" maxlength="5" placeholder="CODE" autocomplete="off" />
+        <button id="btn-join" class="btn">Rejoindre</button>
+      </div>
+      <p id="menu-error" class="error"></p>
+    </div>
+  </section>
+
+  <!-- HUD du lobby -->
+  <section id="hud-lobby" class="hud hidden">
+    <div class="panel lobby-top">
+      <div class="code-box">Code du lobby <strong id="lobby-code">-----</strong><button id="btn-copy" class="mini">Copier</button></div>
+      <ul id="lobby-players"></ul>
+      <div class="lobby-river">Fleuve : <strong id="lobby-river">—</strong></div>
+      <button id="btn-board" class="btn small">📋 Tableau des fleuves</button>
+      <button id="btn-start" class="btn primary small hidden">🚣 Lancer la descente</button>
+      <p id="wait-host" class="muted hidden">En attente de l'hôte…</p>
+    </div>
+    <div id="prompt" class="prompt hidden"></div>
+    <div id="tuto" class="panel tuto hidden">
+      <h3>Tutoriel sur le lac</h3>
+      <ol id="tuto-steps"></ol>
+      <p class="muted">Échap : quitter le tutoriel</p>
+    </div>
+    <div class="help panel">
+      <b>Rive</b> : ZQSD / WASD / flèches pour marcher · <b>E</b> interagir<br />
+      Le <b>ponton</b> mène au tutoriel, le <b>tableau</b> au choix du fleuve.
+    </div>
+  </section>
+
+  <!-- Tableau des fleuves -->
+  <section id="board" class="screen hidden">
+    <div class="card board-card">
+      <h2>Choisissez le fleuve</h2>
+      <div id="river-list" class="river-list"></div>
+      <button id="btn-board-close" class="btn">Fermer</button>
+    </div>
+  </section>
+
+  <!-- HUD de course -->
+  <section id="hud-race" class="hud hidden">
+    <div class="dist-box">
+      <div id="dist" class="dist">0 m</div>
+      <div id="next-cp" class="muted">Poste de secours dans 500 m</div>
+    </div>
+    <div class="panel boat-panel">
+      <div class="row"><span>Coque</span><div class="bar"><i id="hull-bar"></i></div></div>
+      <div id="parts" class="parts"></div>
+      <div id="effects" class="effects"></div>
+    </div>
+    <div class="panel wind-panel">
+      <div class="wind"><div id="wind-arrow" class="arrow">➤</div></div>
+      <div><div id="wind-txt">Vent 0</div><div id="speed">0 km/h</div></div>
+    </div>
+    <div class="panel crew-panel"><ul id="crew"></ul></div>
+    <div id="me-box" class="me-box"></div>
+    <div id="toasts" class="toasts"></div>
+    <div class="help panel race-help">
+      <b>Q/A/←</b> ramer à gauche · <b>D/→</b> ramer à droite · <b>F</b> pêche · <b>Espace</b> sauter<br />
+      À l'eau : <b>ZQSD/WASD</b> nager · <b>E</b> remonter
+    </div>
+  </section>
+
+  <!-- Fin de partie -->
+  <section id="over" class="screen hidden">
+    <div class="card">
+      <h2 id="over-title">Fin de la descente</h2>
+      <p id="over-reason"></p>
+      <div class="big" id="over-dist">0 m</div>
+      <p id="over-stats" class="muted"></p>
+      <button id="btn-back" class="btn primary hidden">Retour au lobby</button>
+      <p id="over-wait" class="muted hidden">L'hôte va vous ramener au lobby…</p>
+    </div>
+  </section>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/shared/game-core.js"></script>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
